@@ -24,13 +24,18 @@ namespace Task3
             this.parent = parent;
         }
         public string Format(string format, object arg, IFormatProvider formatProvider) 
-        {            
-            if(arg == null || format != "W")
-            {
-                return string.Format(parent, format, arg);
-            }
+        { 
             int numb = (int)arg;
-            return HexFormat(numb);
+            switch(format)
+            {
+                case "X":
+                    return HexFormat(numb).ToUpper();
+                case "x":
+                    return HexFormat(numb).ToLower();
+                default:
+                    return HexFormat(numb).ToLower();
+
+            }
         }
         private string HexFormat(double numb)
         {
