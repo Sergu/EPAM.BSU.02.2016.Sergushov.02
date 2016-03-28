@@ -9,23 +9,36 @@ namespace Task2
 {
     public class EuclidType
     {
+        private delegate int NodCalc(int numb1, int numb2);
         public static int NodByEuclid(int firstNumb, int secondNumb, out int milliSeconds)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            int nod = CalcNodByEuclidAlgorithm(firstNumb, secondNumb);
+            int nod = NodByEuclid(firstNumb, secondNumb);
             stopwatch.Stop();
             milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByEuclid(int firstNumb, int secondNumb)
+        {
+            NodCalc nodCalc = new NodCalc(CalcNodByEuclidAlgorithm);
+            int nod = nodCalc(firstNumb, secondNumb);
             return nod;
         }
         public static int NodByEuclid(int firstNumb, int secondNumb, int thirdNumb, out int milliSeconds)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            int nod = CalcNodByEuclidAlgorithm(firstNumb, secondNumb);
-            nod = CalcNodByEuclidAlgorithm(nod, thirdNumb);
+            int nod = NodByEuclid(firstNumb, secondNumb, thirdNumb);
             stopwatch.Stop();
             milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByEuclid(int firstNumb, int secondNumb, int thirdNumb)
+        {
+            NodCalc nodCalc = new NodCalc(CalcNodByEuclidAlgorithm);
+            int nod = nodCalc(firstNumb, secondNumb);
+            nod = nodCalc(nod, thirdNumb);
             return nod;
         }
         public static int NodByEuclid(out int milliSeconds, params int[] numbers)
@@ -45,18 +58,31 @@ namespace Task2
                 milliSeconds = stopwatch.Elapsed.Milliseconds;
                 throw new ArgumentException();
             }
-
-            int numbersCounter = 0;
-            int paramA = numbers[numbersCounter++];
-            int nod = paramA;
-            while (numbersCounter < numbers.Length)
-            {
-                int paramB = numbers[numbersCounter++];
-                nod = CalcNodByEuclidAlgorithm(paramA, paramB);
-                paramA = nod;
-            }
+            int nod = NodByEuclid(numbers);
             stopwatch.Stop();
             milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByEuclid(params int[] numbers)
+        {
+            if (numbers == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (numbers.Length < 2)
+            {
+                throw new ArgumentException();
+            }
+            NodCalc nodCalc = new NodCalc(CalcNodByEuclidAlgorithm);
+            int numbersCounter = 0;
+            int numb1 = numbers[numbersCounter++];
+            int nod = numb1;
+            while (numbersCounter < numbers.Length)
+            {
+                int numb2 = numbers[numbersCounter++];
+                nod = nodCalc(numb1, numb2);
+                numb1 = nod;
+            }
             return nod;
         }
 
@@ -64,19 +90,31 @@ namespace Task2
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            int nod = CalcNodByStein(firstNumb, secondNumb);
+            int nod = NodByStein(firstNumb, secondNumb);
             stopwatch.Stop();
             milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByStein(int firstNumb, int secondNumb)
+        {
+            NodCalc nodCalc = new NodCalc(CalcNodByStein);
+            int nod = nodCalc(firstNumb, secondNumb);
             return nod;
         }
         public static int NodByStein(int firstNumb, int secondNumb, int thirdNumb, out int milliSeconds)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            int nod = CalcNodByStein(firstNumb, secondNumb);
-            nod = CalcNodByStein(nod, thirdNumb);
+            int nod = NodByStein(firstNumb, secondNumb, thirdNumb);
             stopwatch.Stop();
             milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByStein(int firstNumb, int secondNumb, int thirdNumb)
+        {
+            NodCalc nodCalc = new NodCalc(CalcNodByStein);
+            int nod = nodCalc(firstNumb, secondNumb);
+            nod = nodCalc(nod, thirdNumb);
             return nod;
         }
         public static int NodByStein(out int milliSeconds, params int[] numbers)
@@ -96,18 +134,31 @@ namespace Task2
                 milliSeconds = stopwatch.Elapsed.Milliseconds;
                 throw new ArgumentException();
             }
-
+            int nod = NodByStein(numbers);
+            stopwatch.Stop();
+            milliSeconds = stopwatch.Elapsed.Milliseconds;
+            return nod;
+        }
+        public static int NodByStein(params int[] numbers)
+        {
+            if (numbers == null)
+            {
+                throw new NullReferenceException();
+            }
+            if (numbers.Length < 2)
+            {
+                throw new ArgumentException();
+            }
+            NodCalc nodCalc = new NodCalc(CalcNodByStein);
             int numbersCounter = 0;
             int firstNumb = numbers[numbersCounter++];
             int nod = firstNumb;
             while (numbersCounter < numbers.Length)
             {
                 int secondNumb = numbers[numbersCounter++];
-                nod = CalcNodByStein(firstNumb, secondNumb);
+                nod = nodCalc(firstNumb, secondNumb);
                 firstNumb = nod;
             }
-            stopwatch.Stop();
-            milliSeconds = stopwatch.Elapsed.Milliseconds;
             return nod;
         }
         private static int CalcNodByEuclidAlgorithm(int firstNumb, int secondNumb)

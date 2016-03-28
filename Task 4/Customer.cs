@@ -12,7 +12,7 @@ namespace Task4
         public string Name { get; set; }
         public string ContactPhone { get; set; }
         public decimal Revenue { get; set; }
-        public Customer(string name,decimal revenue, string contactPhone)
+        public Customer(string name, string contactPhone, decimal revenue)
         {
             this.Name = name;
             this.Revenue = revenue;
